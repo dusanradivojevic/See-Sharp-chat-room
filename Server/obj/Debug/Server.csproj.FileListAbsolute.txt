@@ -1,0 +1,9 @@
+D:\FON\PS\Chat room\Server\bin\Debug\Server.exe.config
+D:\FON\PS\Chat room\Server\bin\Debug\Server.exe
+D:\FON\PS\Chat room\Server\bin\Debug\Server.pdb
+D:\FON\PS\Chat room\Server\bin\Debug\Common.dll
+D:\FON\PS\Chat room\Server\bin\Debug\Common.pdb
+D:\FON\PS\Chat room\Server\obj\Debug\Server.csprojAssemblyReference.cache
+D:\FON\PS\Chat room\Server\obj\Debug\Server.csproj.CopyComplete
+D:\FON\PS\Chat room\Server\obj\Debug\Server.exe
+D:\FON\PS\Chat room\Server\obj\Debug\Server.pdb

@@ -1,0 +1,13 @@
+D:\FON\PS\Chat room\Klijent\bin\Debug\Klijent.exe.config
+D:\FON\PS\Chat room\Klijent\bin\Debug\Klijent.exe
+D:\FON\PS\Chat room\Klijent\bin\Debug\Klijent.pdb
+D:\FON\PS\Chat room\Klijent\bin\Debug\Common.dll
+D:\FON\PS\Chat room\Klijent\bin\Debug\Common.pdb
+D:\FON\PS\Chat room\Klijent\obj\Debug\Klijent.csprojAssemblyReference.cache
+D:\FON\PS\Chat room\Klijent\obj\Debug\Klijent.FrmKlijent.resources
+D:\FON\PS\Chat room\Klijent\obj\Debug\Klijent.FrmPrijava.resources
+D:\FON\PS\Chat room\Klijent\obj\Debug\Klijent.Properties.Resources.resources
+D:\FON\PS\Chat room\Klijent\obj\Debug\Klijent.csproj.GenerateResource.cache
+D:\FON\PS\Chat room\Klijent\obj\Debug\Klijent.csproj.CopyComplete
+D:\FON\PS\Chat room\Klijent\obj\Debug\Klijent.exe
+D:\FON\PS\Chat room\Klijent\obj\Debug\Klijent.pdb
