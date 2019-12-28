@@ -37,17 +37,34 @@ namespace Klijent
 
         public void IspisujPoruke()
         {
-            while (true)
+            try
             {
-                Poruka poruka = formatter.Deserialize(tok) as Poruka;
-                forma.AzurirajPoruke(poruka);
+                while (true)
+                {
+                    Poruka poruka = formatter.Deserialize(tok) as Poruka;
+                    forma.AzurirajPoruke(poruka);
+                }
             }
+            catch
+            {
+                forma.AzurirajPoruke(new Poruka("SERVER", "Server je prestao sa radom."));
+                klijentskiSoket.Close();
+            }            
         }
 
         public void PosaljiPoruku(string tekst)
         {
-            Poruka poruka = new Poruka(Komunikacija.Instance.nick, tekst);
-            formatter.Serialize(tok, poruka);
+            try
+            {
+                Poruka poruka = new Poruka(Komunikacija.Instance.nick, tekst);
+                formatter.Serialize(tok, poruka);
+
+            }
+            catch
+            {
+                forma.AzurirajPoruke(new Poruka("SERVER", "Server je prestao sa radom."));
+                klijentskiSoket.Close();
+            }
         }
     }
 }

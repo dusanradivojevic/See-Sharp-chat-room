@@ -14,22 +14,18 @@ namespace Server
 {
     public class Server
     {
-        private List<Klijent> klijenti;
+        public List<Klijent> listaKlijenata;
         private Socket osluskujuciSoket;
         private BinaryFormatter formatter = new BinaryFormatter();
-
-        public static void Main()
+        private FrmServer forma;
+        
+        public Server(FrmServer f)
         {
-            Server ser = new Server();
-            ser.PokreniServer();
+            listaKlijenata = new List<Klijent>();
+            forma = f;
         }
 
-        public Server()
-        {
-            klijenti = new List<Klijent>();
-        }
-
-        public void PokreniServer()
+        public bool PokreniServer()
         {
             try
             {
@@ -39,65 +35,127 @@ namespace Server
                     17510));
                 osluskujuciSoket.Listen(5);
 
-                Console.WriteLine("Server je pokrenut!");
-                Osluskuj();
+                forma.IspisiPoruku("Server je pokrenut!");
+
+                Thread nit = new Thread(Osluskuj);
+                nit.IsBackground = true;
+                nit.Start();
+
+                return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine("Neuspesno pokretanje servera. >>> " + e.Message);
-
+                forma.IspisiPoruku("Neuspesno pokretanje servera. >>> " + e.Message);
+                return false;
             }
         }
 
         private void Osluskuj()
         {
-            Console.WriteLine("Server ceka na povezivanje PRVOG klijenta.");
+            forma.IspisiPoruku("Server ceka na povezivanje klijenata.");
             while (true)
             {
                 try
                 {
                     Socket klijentSoket = osluskujuciSoket.Accept();
 
-                    Klijent kl = new Klijent(klijenti.Count + 1, klijentSoket);
+                    Klijent kl = new Klijent(klijentSoket);
                     byte[] nazivOdKlijenta = new byte[100];
                     klijentSoket.Receive(nazivOdKlijenta);
                     kl.Nick = Encoding.ASCII.GetString(nazivOdKlijenta);
 
-                    klijenti.Add(kl);
+                    listaKlijenata.Add(kl);
+                    forma.DodajKlijenta(kl);
 
                     Thread nit = new Thread(() =>
                     {
-                        PrimajPoruke(new NetworkStream(klijentSoket));
+                        PrimajPoruke(kl);
                     });
                     nit.IsBackground = true;
                     nit.Start();
 
-                    Console.WriteLine("Klijent je povezan." + kl.Nick);                    
+                    forma.IspisiPoruku($"{kl.Nick} se povezao.");                    
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Neuspesno povezivanje klijenta na server.");
+                    if(osluskujuciSoket.Connected)
+                        forma.IspisiPoruku("Neuspesno povezivanje klijenta na server.");
                 }
             }
         }
 
-        public void PrimajPoruke(NetworkStream tok)
+        public void PrimajPoruke(Klijent k)
         {
-            while (true)
+            NetworkStream tok = new NetworkStream(k.Soket);
+
+            try
             {
-                Poruka p = formatter.Deserialize(tok) as Poruka;
+                while (true)
+                {
+                    Poruka p = formatter.Deserialize(tok) as Poruka;
 
-                //Console.WriteLine(p.ToString());
+                    //Console.WriteLine(p.ToString());
 
-                SaljiPoruke(p);
+                    SaljiPoruke(p);
+                }
+            }
+            catch
+            {
+                ZatvoriKlijenta(k);
+            }
+        }
+
+        public void ZatvoriKlijenta(Klijent k)
+        {
+            foreach(Klijent klijent in listaKlijenata)
+            {
+                if (klijent.Equals(k))
+                {
+                    try
+                    {
+                        klijent.Soket.Close();
+                        listaKlijenata.Remove(klijent);
+                        forma.ObrisiKlijenta(klijent);
+                    }
+                    catch
+                    {
+
+                    }
+                    break;
+                }
             }
         }
 
         public void SaljiPoruke(Poruka p)
         {
-            foreach (Klijent kl in klijenti)
+            foreach (Klijent kl in listaKlijenata)
             {
                 formatter.Serialize(kl.tok, p);
+            }
+        }
+
+        public bool ZaustaviServer()
+        {
+            try
+            {
+                osluskujuciSoket.Close();
+
+                foreach(Klijent k in listaKlijenata)
+                {
+                    k.Soket.Close();
+
+                }
+
+                listaKlijenata.Clear();
+                forma.ObrisiListu();
+
+                forma.IspisiPoruku("Server je zaustavljen!");
+                return true;
+            }
+            catch
+            {
+                forma.IspisiPoruku("Doslo je do greske prilikom zaustavljanja servera.");
+                return false;
             }
         }
     }

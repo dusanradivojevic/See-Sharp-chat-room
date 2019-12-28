@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -9,9 +10,10 @@ namespace Common
 {
     public class Klijent
     {
-        public int Id { get; set; }
         public string Nick { get; set; }
+        [Browsable(false)]
         public Socket Soket { get; set; }
+        [Browsable(false)]
         public NetworkStream tok { get; set; }
 
         public Klijent()
@@ -19,18 +21,21 @@ namespace Common
 
         }
 
-        public Klijent(int Id, string Nick)
+        public Klijent(string Nick)
         {
-            this.Id = Id;
             this.Nick = Nick;
         }
 
-        public Klijent(int Id, Socket sok)
+        public Klijent(Socket sok)
         {
-            this.Id = Id;
             Soket = sok;
 
             tok = new NetworkStream(sok);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ((Klijent)obj).Soket.Equals(this.Soket);
         }
     }
 }

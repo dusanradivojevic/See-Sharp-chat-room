@@ -7,3 +7,5 @@ D:\FON\PS\Chat room\Server\obj\Debug\Server.csprojAssemblyReference.cache
 D:\FON\PS\Chat room\Server\obj\Debug\Server.csproj.CopyComplete
 D:\FON\PS\Chat room\Server\obj\Debug\Server.exe
 D:\FON\PS\Chat room\Server\obj\Debug\Server.pdb
+D:\FON\PS\Chat room\Server\obj\Debug\Server.FrmServer.resources
+D:\FON\PS\Chat room\Server\obj\Debug\Server.csproj.GenerateResource.cache

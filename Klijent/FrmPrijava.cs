@@ -28,6 +28,8 @@ namespace Klijent
 
             FrmKlijent forma = new FrmKlijent();
             forma.ShowDialog();
+
+            Dispose();
         }
     }
 }
